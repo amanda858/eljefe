@@ -22,7 +22,7 @@ export default function Navbar() {
           <>
             <Link to="/dashboard" className="nav-link">Dashboard</Link>
             <Link to="/subscriptions" className="nav-link">Plans</Link>
-            <span className="tier-badge tier-badge--{user.tier}">{user.tier.toUpperCase()}</span>
+            <span className={`tier-badge tier-badge--${user.tier}`}>{user.tier.toUpperCase()}</span>
             <button onClick={handleLogout} className="nav-btn nav-btn--outline">Logout</button>
           </>
         ) : (

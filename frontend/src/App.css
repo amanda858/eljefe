@@ -1,0 +1,2 @@
+/* Minimal global resets - design is handled per-page */
+*, *::before, *::after { box-sizing: border-box; }

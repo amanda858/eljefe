@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build artifacts
+frontend/dist/
+frontend/dist-ssr/
+
+# Data (user data persisted by the app)
+backend/data/
+
+# Environment files (contain secrets)
+.env
+**/.env
+!**/.env.example
+
+# Editor
+.vscode/
+.idea/
+*.sw?
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*

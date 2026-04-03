@@ -1,0 +1,13 @@
+{
+  "name": "eljefe",
+  "version": "1.0.0",
+  "description": "Advanced subscription-based sports betting odds platform",
+  "private": true,
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "start:backend": "npm --prefix backend start",
+    "build:frontend": "npm --prefix frontend run build",
+    "test:backend": "npm --prefix backend test"
+  }
+}

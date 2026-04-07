@@ -1,0 +1,179 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Next dev server",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run",
+                "dev"
+            ],
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "Run backend dev server",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "docker compose up -d postgres && until docker compose exec -T postgres pg_isready -U postgres -d eljefe >/dev/null 2>&1; do true; done && cd backend && if [ ! -f .env ]; then cp .env.example .env; fi && npm install && npm run dev:boot"
+            ],
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Docker Compose stack",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "compose",
+                "up",
+                "--build"
+            ],
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "Print Codespaces env",
+            "type": "shell",
+            "command": "env",
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Make port 3000 public",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "gh codespace ports visibility 3000:public -c \"$CODESPACE_NAME\" && echo \"Port 3000 is public at https://$CODESPACE_NAME-3000.$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN\""
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Print public app URL",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "echo \"https://$CODESPACE_NAME-3000.$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN\""
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Verify local app URL",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "curl -I -sS http://127.0.0.1:3000"
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Verify public app URL",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "curl -I -sS \"https://$CODESPACE_NAME-3000.$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN\""
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Build frontend and backend",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "npm run build && npm --prefix backend run build"
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Run backend engine tests",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "--prefix",
+                "backend",
+                "test"
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Check Vercel CLI",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "if command -v vercel >/dev/null 2>&1; then vercel --version; else npx vercel --version; fi"
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Check Vercel auth",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "if command -v vercel >/dev/null 2>&1; then vercel whoami; else npx vercel whoami; fi"
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Deploy frontend to Vercel",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "if command -v vercel >/dev/null 2>&1; then vercel deploy --prod --yes; else npx vercel deploy --prod --yes; fi"
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Create short redirect link",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "for alias in eljefe eljefe-app eljefe-live eljefe-bets; do result=$(curl -fsS \"https://is.gd/create.php?format=simple&shorturl=$alias&url=https://$CODESPACE_NAME-3000.$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN\" || true); case \"$result\" in https://is.gd/*|https://v.gd/*) echo \"$result\"; exit 0 ;; esac; done; echo \"Unable to create short alias\"; exit 1"
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Verify short redirect link",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "curl -I -sS https://is.gd/eljefe"
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        },
+        {
+            "label": "Resolve short redirect link",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-lc",
+                "curl -I -L -sS https://is.gd/eljefe | tail -n 20"
+            ],
+            "isBackground": false,
+            "problemMatcher": []
+        }
+    ]
+}

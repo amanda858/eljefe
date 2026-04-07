@@ -1,15 +1,14 @@
 import Link from "next/link";
-import { HomeIntro } from "@/components/home-intro";
 import { GameTable, type GameTableRow } from "@/components/game-table";
-import { RunningBullMark } from "@/components/running-bull-mark";
 import { getBackendTodayGames } from "@/lib/backend-api";
 import { getRealMarkets, isOddsApiConfigured } from "@/lib/odds-api";
 
-type PreviewCard = {
+type BetCard = {
     title: string;
     score: number;
     detail: string;
     href: string;
+    league?: string;
 };
 
 function clampScore(value: number) {
@@ -26,25 +25,34 @@ function scoreFromPercent(value: string, base: number) {
     return clampScore(Math.round(numeric * 10 + base));
 }
 
-function buildFallbackCards(): PreviewCard[] {
+function getScoreClass(score: number) {
+    if (score >= 80) return "bet-score-high";
+    if (score >= 70) return "bet-score-mid";
+    return "bet-score-low";
+}
+
+function buildFallbackCards(): BetCard[] {
     return [
         {
             title: "Lakers vs Suns",
             score: 72,
             detail: "Signal preview · awaiting live market feed",
             href: "/edges",
+            league: "NBA",
         },
         {
             title: "Yankees vs Red Sox",
             score: 64,
             detail: "Signal preview · awaiting live market feed",
             href: "/edges",
+            league: "MLB",
         },
         {
             title: "Chiefs vs Bills",
             score: 81,
             detail: "Signal preview · awaiting live market feed",
             href: "/edges",
+            league: "NFL",
         },
     ];
 }
@@ -72,11 +80,11 @@ export default async function Home() {
         weatherSummary: game.weather ? `${game.weather.conditions} · ${game.weather.wind}` : "Indoor or weather neutral",
     }));
 
-    const previewCards: PreviewCard[] = realMarkets.length > 0
+    const betCards: BetCard[] = realMarkets.length > 0
         ? realMarkets
             .filter((market) => parseFloat(market.edge) > 0.5)
             .sort((left, right) => parseFloat(right.edge) - parseFloat(left.edge))
-            .slice(0, 3)
+            .slice(0, 6)
             .map((market) => ({
                 title: market.event,
                 score: scoreFromPercent(market.edge, 30),
@@ -84,7 +92,7 @@ export default async function Home() {
                 href: "/edges",
             }))
         : todayGames.length > 0
-            ? todayGames.slice(0, 3).map((game) => ({
+            ? todayGames.slice(0, 6).map((game) => ({
                 title: `${game.awayTeam} vs ${game.homeTeam}`,
                 score: scoreFromPercent(game.edgeSummary, 40),
                 detail: new Date(game.startTime).toLocaleString("en-US", {
@@ -95,100 +103,80 @@ export default async function Home() {
                     timeZone: "America/New_York",
                 }),
                 href: `/game/${game.id}`,
+                league: game.leagueCode,
             }))
             : buildFallbackCards();
 
+    const todayDate = new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        timeZone: "America/New_York",
+    });
+
     return (
-        <main className="page-shell landing-page">
-            <HomeIntro />
-
-            <section className="landing-hero">
-                <div className="landing-hero-top">
-                    <div className="landing-logo-wrap">
-                        <div className="landing-logo-bull">
-                            <RunningBullMark className="landing-logo-bull-mark" />
-                        </div>
-                        <div className="landing-logo-text">EL JEFE SPORTS</div>
-                    </div>
-                </div>
-
-                <div className="landing-hero-copy">
-                    <p className="landing-hero-kicker">Real-time edge intelligence</p>
-                    <h1 className="landing-hero-title">
-                        <span className="landing-hero-title-red">Lead the herd.</span>
-                        <br />
-                        Take the book.
-                    </h1>
-                    <p className="landing-hero-sub">
-                        When the bull charges, <span className="landing-hero-sub-red">the game changes.</span>
-                        <br />
-                        El Jefe turns live odds, momentum, and market behavior into one clear edge score before the books adjust.
+        <main className="page-shell bets-page">
+            <section className="bets-page-header">
+                <div className="bets-page-header-left">
+                    <p className="bets-page-date">{todayDate}</p>
+                    <h1 className="bets-page-title">Today&apos;s Best Bets</h1>
+                    <p className="bets-page-sub">
+                        {betCards.length} value plays surfaced · edge-ranked, model-verified
                     </p>
-                    <div className="landing-actions">
-                        <Link className="landing-button landing-button-primary" href="#todays-edges">
-                            See today&apos;s edges
-                        </Link>
-                        <Link className="landing-button landing-button-ghost" href="#how-it-works">
-                            How El Jefe thinks
-                        </Link>
-                    </div>
+                </div>
+                <div className="bets-page-header-right">
+                    <Link className="bets-cta-button" href="/edges">
+                        Full Command Center
+                    </Link>
+                    <Link className="bets-cta-button bets-cta-secondary" href="/dashboard">
+                        Dashboard
+                    </Link>
                 </div>
             </section>
 
-            <section className="landing-explain" id="how-it-works">
-                <div className="landing-section-heading">
-                    <p className="landing-eyebrow">The edge is the truth the market hasn&apos;t priced yet.</p>
-                    <h2>Make the market readable.</h2>
+            <section className="bets-grid-section">
+                <div className="bets-section-label">
+                    <span className="bets-section-dot" />
+                    Top value plays
                 </div>
-
-                <div className="landing-pillars">
-                    <article className="landing-pillar">
-                        <h3>Speed</h3>
-                        <p>Reads the market faster than humans can.</p>
-                    </article>
-                    <article className="landing-pillar">
-                        <h3>Signal</h3>
-                        <p>Filters noise from real movement.</p>
-                    </article>
-                    <article className="landing-pillar">
-                        <h3>Strength</h3>
-                        <p>Scores edges with clarity and confidence.</p>
-                    </article>
-                </div>
-            </section>
-
-            <section className="landing-preview" id="todays-edges">
-                <div className="landing-section-heading">
-                    <p className="landing-eyebrow">Today&apos;s edges</p>
-                    <h2>Start where the numbers break first.</h2>
-                </div>
-
-                <div className="landing-cards">
-                    {previewCards.map((card) => (
-                        <article className="landing-card" key={`${card.title}-${card.score}`}>
-                            <h3>{card.title}</h3>
-                            <p className="landing-card-detail">{card.detail}</p>
-                            <p className="landing-score">Edge Score: {card.score}</p>
-                            <Link className="landing-card-button" href={card.href}>
-                                View breakdown
+                <div className="bets-card-grid">
+                    {betCards.map((card) => (
+                        <article className="bet-card" key={`${card.title}-${card.score}`}>
+                            <div className="bet-card-top">
+                                {card.league && (
+                                    <span className="bet-card-league">{card.league}</span>
+                                )}
+                                <span className={`bet-card-score ${getScoreClass(card.score)}`}>
+                                    {card.score}
+                                </span>
+                            </div>
+                            <h3 className="bet-card-title">{card.title}</h3>
+                            <p className="bet-card-detail">{card.detail}</p>
+                            <Link className="bet-card-link" href={card.href}>
+                                View breakdown →
                             </Link>
                         </article>
                     ))}
                 </div>
             </section>
 
-            <section className="content-section">
-                <div className="section-heading">
-                    <p className="eyebrow">Today&apos;s slate</p>
-                    <h2>Records, venue context, weather, and direct drill-in for every live matchup.</h2>
+            <section className="bets-slate-section">
+                <div className="bets-section-label">
+                    <span className="bets-section-dot" />
+                    Today&apos;s full slate
                 </div>
                 <GameTable rows={slateRows} />
             </section>
 
-            <section className="landing-footer-note">
-                <p>El Jefe Sports © 2026</p>
-                <p>Built to find the move before the book finishes the thought.</p>
-            </section>
+            <footer className="bets-page-footer">
+                <p>El Jefe Sports © 2026 · Real-time edge intelligence</p>
+                <div className="bets-page-footer-links">
+                    <Link href="/edges">Command Center</Link>
+                    <Link href="/dashboard">Dashboard</Link>
+                    <Link href="/sports">Sports</Link>
+                    <Link href="/status">Status</Link>
+                </div>
+            </footer>
         </main>
     );
 }

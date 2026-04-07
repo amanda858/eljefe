@@ -1,0 +1,189 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/events/[id]",
+      "regex": "^/api/events/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/events/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/markets/[id]",
+      "regex": "^/api/markets/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/markets/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/sports/[sport]",
+      "regex": "^/api/sports/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPsport": "nxtPsport"
+      },
+      "namedRegex": "^/api/sports/(?<nxtPsport>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/sports/[sport]/intel",
+      "regex": "^/api/sports/([^/]+?)/intel(?:/)?$",
+      "routeKeys": {
+        "nxtPsport": "nxtPsport"
+      },
+      "namedRegex": "^/api/sports/(?<nxtPsport>[^/]+?)/intel(?:/)?$"
+    },
+    {
+      "page": "/game/[id]",
+      "regex": "^/game/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/game/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/sports/[sport]",
+      "regex": "^/sports/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPsport": "nxtPsport"
+      },
+      "namedRegex": "^/sports/(?<nxtPsport>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/events",
+      "regex": "^/api/events(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/events(?:/)?$"
+    },
+    {
+      "page": "/api/markets",
+      "regex": "^/api/markets(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/markets(?:/)?$"
+    },
+    {
+      "page": "/api/season-games",
+      "regex": "^/api/season\\-games(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/season\\-games(?:/)?$"
+    },
+    {
+      "page": "/api/status/season-feed",
+      "regex": "^/api/status/season\\-feed(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/status/season\\-feed(?:/)?$"
+    },
+    {
+      "page": "/api/value-bets",
+      "regex": "^/api/value\\-bets(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/value\\-bets(?:/)?$"
+    },
+    {
+      "page": "/api/value-bets/accuracy",
+      "regex": "^/api/value\\-bets/accuracy(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/value\\-bets/accuracy(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/edges",
+      "regex": "^/edges(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/edges(?:/)?$"
+    },
+    {
+      "page": "/icon.svg",
+      "regex": "^/icon\\.svg(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/icon\\.svg(?:/)?$"
+    },
+    {
+      "page": "/owner-login",
+      "regex": "^/owner\\-login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/owner\\-login(?:/)?$"
+    },
+    {
+      "page": "/sports",
+      "regex": "^/sports(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/sports(?:/)?$"
+    },
+    {
+      "page": "/status",
+      "regex": "^/status(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/status(?:/)?$"
+    },
+    {
+      "page": "/subscribe",
+      "regex": "^/subscribe(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/subscribe(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

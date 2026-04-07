@@ -1,0 +1,20 @@
+{
+  "node": {
+    "40edbc8061b268423e4db4c53bb5575cd75ea803ae": {
+      "workers": {
+        "app/owner-login/page": {
+          "moduleId": "[project]/.next-internal/server/app/owner-login/page/actions.js { ACTIONS_MODULE0 => \"[project]/app/owner-login/actions.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "loginOwner",
+          "filename": "app/owner-login/actions.ts"
+        }
+      },
+      "layer": {
+        "app/owner-login/page": "rsc"
+      },
+      "exportedName": "loginOwner",
+      "filename": "app/owner-login/actions.ts"
+    }
+  },
+  "edge": {}
+}

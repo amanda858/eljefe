@@ -1,0 +1,3 @@
+{
+  "/api/sports/[sport]/intel/route": "app/api/sports/[sport]/intel/route.js"
+}

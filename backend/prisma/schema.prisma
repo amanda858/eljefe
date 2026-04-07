@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MarketType {
+  MONEYLINE
+  SPREAD
+  TOTAL
+}
+
+enum Selection {
+  HOME
+  AWAY
+  OVER
+  UNDER
+}
+
+model League {
+  id    String @id @default(cuid())
+  name  String
+  code  String @unique
+  teams Team[]
+  games Game[]
+}
+
+model Team {
+  id            String @id @default(cuid())
+  leagueId      String
+  name          String
+  abbr          String
+  homeGames     Game[] @relation("HomeTeam")
+  awayGames     Game[] @relation("AwayTeam")
+  league        League @relation(fields: [leagueId], references: [id], onDelete: Cascade)
+
+  @@unique([leagueId, abbr])
+}
+
+model Game {
+  id               String         @id @default(cuid())
+  leagueId         String
+  homeTeamId       String
+  awayTeamId       String
+  startTime        DateTime
+  venue            String
+  broadcastNetwork String?
+  league           League         @relation(fields: [leagueId], references: [id], onDelete: Cascade)
+  homeTeam         Team           @relation("HomeTeam", fields: [homeTeamId], references: [id], onDelete: Cascade)
+  awayTeam         Team           @relation("AwayTeam", fields: [awayTeamId], references: [id], onDelete: Cascade)
+  oddsSnapshots    OddsSnapshot[]
+}
+
+model Book {
+  id            String         @id @default(cuid())
+  name          String
+  code          String         @unique
+  oddsSnapshots OddsSnapshot[]
+}
+
+model OddsSnapshot {
+  id         String     @id @default(cuid())
+  gameId      String
+  bookId      String
+  marketType  MarketType
+  selection   Selection
+  price       Int
+  line        Float?
+  createdAt   DateTime   @default(now())
+  game        Game       @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  book        Book       @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@index([gameId, marketType, selection, createdAt])
+}

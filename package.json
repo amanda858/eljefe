@@ -1,0 +1,26 @@
+{
+    "name": "eljefe",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev --hostname 0.0.0.0 --port 3000",
+        "dev:frontend": "next dev --hostname 0.0.0.0 --port 3000",
+        "dev:backend": "npm --prefix backend run dev",
+        "build": "next build",
+        "build:frontend": "next build",
+        "build:backend": "npm --prefix backend run build",
+        "start": "next start --hostname 0.0.0.0 --port 3000",
+        "start:frontend": "next start --hostname 0.0.0.0 --port 3000"
+    },
+    "dependencies": {
+        "next": "^16.2.2",
+        "react": "19.2.0",
+        "react-dom": "19.2.0"
+    },
+    "devDependencies": {
+        "@types/node": "24.6.1",
+        "@types/react": "19.2.2",
+        "@types/react-dom": "19.2.2",
+        "typescript": "5.9.3"
+    }
+}

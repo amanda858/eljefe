@@ -1,0 +1,11 @@
+{
+  "pages": {},
+  "app": {
+    "[project]/app/owner-login/page": [
+      "static/media/6ad1cda2f16975ee-s.p.b58dc1ff.woff2",
+      "static/media/0c89a48fa5027cee-s.p.4564287c.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pagesUsingSizeAdjust": false
+}
